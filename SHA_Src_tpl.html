@@ -1,0 +1,68 @@
+<!DOCTYPE html5>
+<html>
+	<head>
+		<script src="ext/gl-matrix.js"></script>
+		<script src="GVT_Src_vertexData_plane.js"></script>
+		<script src="GVT_Src_vertexData_sphere.js"></script>
+		<script src="GVT_Src_vertexData_torus.js"></script>
+		<script src="GVT_Src_vertexData_eck.js"></script>
+		<script src="SHA_Src_tpl.js"></script>
+		<script type="x-shader/x-vertex" id="vertexshader">
+			precision mediump float;
+			
+			attribute vec3 aPosition;
+			attribute vec3 aNormal;
+			
+			uniform mat4 uPMatrix;
+			uniform mat4 uMVMatrix;
+			uniform mat3 uNMatrix;
+			
+			varying float vDistance;
+			
+			void main(){
+				vec4 worldPosition = uMVMatrix * vec4(aPosition, 1.0);
+				
+				vDistance = length(worldPosition.xyz);
+				
+				gl_Position = uPMatrix * worldPosition;
+			}
+			</script>
+			
+			<script type="x-shader/x-fragment" id="fragmentshader">
+				precision mediump float;
+				
+				varying float vDistance;
+				
+				void main() {
+					float brightness = 1.4 - (1.0 / (.4 + vDistance * 0.2));
+					
+					gl_FragColor = vec4(vec3(brightness), 1.0);
+				}
+				</script>
+	</head>
+	<body onload="app.start()">
+		<canvas id="canvas" width="500" height="500"></canvas>
+		<div id="text-container">
+			<h1>Legende</h1>
+			<p>W / A / S / D = Bewegung der Kamera</p>
+			<p>Pfeiltasten = Kamera drehen</p>
+		</div>
+	</body>
+</html>
+
+<style>
+	body {
+		margin: 0;
+		display: flex;
+		align-items: flex-start; /* Optional: Text oben ausrichten */
+		height: 100vh; /* Damit alles auf der Höhe des Bildschirms bleibt */
+	}
+
+	#canvas {
+		border: 1px solid black;
+	}
+
+	#text-container {
+		margin-left: 20px; /* Platz zwischen Canvas und Text */
+	}
+</style>
