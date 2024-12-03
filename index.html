@@ -34,9 +34,14 @@
 				varying float vDistance;
 				
 				void main() {
-					float brightness = 1.4 - (1.0 / (.4 + vDistance * 0.2));
 					
-					gl_FragColor = vec4(vec3(brightness), 1.0);
+					// Kombiniere den ursprünglichen Effekt basierend auf vDistance
+					float brightness = 1.4 - (1.0 / (0.5 + vDistance * 0.15));
+					
+					// Kombinierte Helligkeit mit Gradient
+					float combinedBrightness = brightness * .8;
+				
+					gl_FragColor = vec4(vec3(combinedBrightness), 1.2);
 				}
 				</script>
 	</head>
